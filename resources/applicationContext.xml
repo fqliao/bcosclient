@@ -40,7 +40,7 @@
 							<property name="clientCertPassWord" value="123456" />
 	                        <property name="connectionsStr">
 								<list>
-									<value>WB@127.0.0.1:5051</value>
+									<value>WB@127.0.0.1:30301</value>
 								</list>
 							</property>
 						</bean>

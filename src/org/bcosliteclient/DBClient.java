@@ -54,19 +54,19 @@ public class DBClient {
     DBTest dbtest = DBTest.load(contractAddress, web3j, credentials, gasPrice, gasLimit);
     
     //创建表
-//    dbtest.create().get();
+    dbtest.create().get();
     //增
     Future<TransactionReceipt> count =
-        dbtest.insert(new Utf8String("fruit"), new Int256(2), new Utf8String("orange1"));
+        dbtest.insert(new Utf8String("fruit"), new Int256(1), new Utf8String("orange"));
     TransactionReceipt transactionReceipt = count.get();
     List<InsertResultEventResponse> InsertResultEvents = dbtest.getInsertResultEvents(transactionReceipt);
     for (int i = 0; i < InsertResultEvents.size(); i++) {
     InsertResultEventResponse insertResultEventResponse = InsertResultEvents.get(i);
     logger.info("insertCount = "+ insertResultEventResponse.count.getValue().intValue());
     }
-//    
-//    
-//    //查
+    
+    
+    //查
     List<Type> lists = dbtest.read(new Utf8String("fruit")).get();
     try {
       List<Bytes32> list0 = (ArrayList<Bytes32>) lists.get(0).getValue();
@@ -82,12 +82,12 @@ public class DBClient {
         logger.info("item_name = " + item_name);
       }
     } catch (Exception e) {
-      logger.info("查询无记录！");;
+      logger.info("查询无记录！");
     }
-//
-//      
+
+      
     //改  
-//    Future<TransactionReceipt> updateCount = dbtest.update(new Utf8String("fruit"), new Int256(1), new Utf8String("banana"));
+//    Future<TransactionReceipt> updateCount = dbtest.update(new Utf8String("fruit"), new Int256(2), new Utf8String("banana"));
 //    TransactionReceipt transactionReceiptU = updateCount.get();
 //    List<UpdateResultEventResponse> updateResultEvents = dbtest.getUpdateResultEvents(transactionReceiptU);
 //    for (int i = 0; i < updateResultEvents.size(); i++) {
@@ -102,7 +102,7 @@ public class DBClient {
 //  List<RemoveResultEventResponse> removeResultEvents = dbtest.getRemoveResultEvents(transactionReceiptR);
 //  RemoveResultEventResponse reomveResultEventResponse = removeResultEvents.get(0);
 //  logger.info("removeCount = "+ reomveResultEventResponse.count.getValue().intValue());
-      
+//      
   }
 
   public static void main(String[] args) throws Exception {
@@ -136,7 +136,7 @@ public class DBClient {
     deployDBTest();
     
     logger.info("testDBTest");
-    testDBTest();
+    testDBTest(); 
     /* print block number after some transactions */
     ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
     int finishBlockNumber = ethBlockNumber.getBlockNumber().intValue();
