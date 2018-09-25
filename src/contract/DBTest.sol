@@ -1,5 +1,4 @@
 import "DB.sol";
-import "String.sol";
 
 contract DBTest {
     event readResult(bytes32 name, int item_id, bytes32 item_name);
@@ -27,9 +26,9 @@ contract DBTest {
         for(int i=0; i<entries.size(); ++i) {
             Entry entry = entries.get(i);
             
-            user_name_bytes_list[uint256(i)] = entry.getString("name").toBytes32();
+            user_name_bytes_list[uint256(i)] = entry.getBytes32("name");
             item_id_list[uint256(i)] = entry.getInt("item_id");
-            item_name_bytes_list[uint256(i)] = entry.getString("item_name").toBytes32();
+            item_name_bytes_list[uint256(i)] = entry.getBytes32("item_name");
         }
         
         return (user_name_bytes_list, item_id_list, item_name_bytes_list);

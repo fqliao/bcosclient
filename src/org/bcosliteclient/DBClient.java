@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class DBClient {
-  static Logger logger = LoggerFactory.getLogger(bcosliteclient.class);
+  static Logger logger = LoggerFactory.getLogger(DBClient.class);
   public static Web3j web3j;
   // 初始化交易参数
   public static java.math.BigInteger gasPrice = new BigInteger("1");
@@ -57,7 +57,7 @@ public class DBClient {
     dbtest.create().get();
     //增
     Future<TransactionReceipt> count =
-        dbtest.insert(new Utf8String("fruit"), new Int256(1), new Utf8String("orange"));
+        dbtest.insert(new Utf8String("fruit"), new Int256(1), new Utf8String("apple"));
     TransactionReceipt transactionReceipt = count.get();
     List<InsertResultEventResponse> InsertResultEvents = dbtest.getInsertResultEvents(transactionReceipt);
     for (int i = 0; i < InsertResultEvents.size(); i++) {
@@ -87,14 +87,14 @@ public class DBClient {
 
       
     //改  
-//    Future<TransactionReceipt> updateCount = dbtest.update(new Utf8String("fruit"), new Int256(2), new Utf8String("banana"));
+//    Future<TransactionReceipt> updateCount = dbtest.update(new Utf8String("fruit"), new Int256(1), new Utf8String("apple2"));
 //    TransactionReceipt transactionReceiptU = updateCount.get();
 //    List<UpdateResultEventResponse> updateResultEvents = dbtest.getUpdateResultEvents(transactionReceiptU);
 //    for (int i = 0; i < updateResultEvents.size(); i++) {
 //      UpdateResultEventResponse updateResultEventResponse = updateResultEvents.get(i);
 //      logger.info("updateCount = "+ updateResultEventResponse.count.getValue().intValue());
 //    }
-//    
+    
     
     //删
 //  Future<TransactionReceipt> removeCount = dbtest.remove(new Utf8String("fruit"), new Int256(1));
@@ -102,7 +102,7 @@ public class DBClient {
 //  List<RemoveResultEventResponse> removeResultEvents = dbtest.getRemoveResultEvents(transactionReceiptR);
 //  RemoveResultEventResponse reomveResultEventResponse = removeResultEvents.get(0);
 //  logger.info("removeCount = "+ reomveResultEventResponse.count.getValue().intValue());
-//      
+      
   }
 
   public static void main(String[] args) throws Exception {
