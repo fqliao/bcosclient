@@ -26,7 +26,16 @@
 		<property name="systemProxyAddress" value="0x919868496524eedc26dbb81915fa1547a20f8998" />
 		<property name="outPutpath" value="./output/" />
 	</bean>
-
+	
+	<!-- database and amdb node properties configuration-->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+        <property name="locations">  
+           <list>  
+              <value>classpath:amdb.properties</value>  
+            </list>  
+        </property>  
+    </bean> 
+    
 	<!-- 区块链节点信息配置 -->
 	<bean id="channelService" class="org.bcos.channel.client.Service">
 		<property name="orgID" value="WB" /> <!-- 配置本机构名称 -->
@@ -40,7 +49,7 @@
 							<property name="clientCertPassWord" value="123456" />
 	                        <property name="connectionsStr">
 								<list>
-									<value>WB@127.0.0.1:30301</value>
+									<value>${node.name}@${node.ip}:${node.listen_port}</value>
 								</list>
 							</property>
 						</bean>
