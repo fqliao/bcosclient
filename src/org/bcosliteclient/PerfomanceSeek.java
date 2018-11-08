@@ -1,6 +1,7 @@
 package org.bcosliteclient;
 
 import java.math.BigInteger;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
@@ -84,8 +85,8 @@ public class PerfomanceSeek {
                 public void run() {
                     limiter.acquire();
                     Long currentTime = System.currentTimeMillis();
-                    int j =(int)(Math.random()*900000); 
-                    dbTest.insert(new Utf8String("user" + j), new Int256(j), new Utf8String("car" + j), new TransactionSucCallback() {
+                    UUID uuid = UUID.randomUUID(); 
+                    dbTest.insert(new Utf8String(uuid.toString()), new Int256(1), new Utf8String("1"), new TransactionSucCallback() {
                         @Override
                         public void onResponse(EthereumResponse response) {
                             callback.onResponse(System.currentTimeMillis() - currentTime, response);
