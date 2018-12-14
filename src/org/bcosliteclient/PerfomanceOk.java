@@ -22,8 +22,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.google.common.util.concurrent.RateLimiter;
 
-public class PerfomanceSeek {
-    static Logger logger = LoggerFactory.getLogger(PerfomanceSeek.class);
+public class PerfomanceOk {
+    static Logger logger = LoggerFactory.getLogger(PerfomanceOk.class);
     private static AtomicInteger sended = new AtomicInteger(0);
     
 	
@@ -76,8 +76,7 @@ public class PerfomanceSeek {
         java.math.BigInteger initialWeiValue = new BigInteger("0");
         
         System.out.println("部署合约");
-        DBTest dbTest = DBTest.deploy(web3,credentials,gasPrice,gasLimit).send();
-        dbTest.create().send();
+        Ok ok = Ok.deploy(web3,credentials,gasPrice,gasLimit).send();
         
         Integer count = Integer.parseInt(countstr);
         Integer qps = Integer.parseInt(qpsstr);
@@ -95,7 +94,7 @@ public class PerfomanceSeek {
         
         threadPool.initialize();
         
-        PerfomanceSeekCallback callback = new PerfomanceSeekCallback();
+        PerfomanceOkCallback callback = new PerfomanceOkCallback();
         callback.setTotal(count);
 
         for (Integer i = 0; i < count; ++i) {
@@ -105,14 +104,14 @@ public class PerfomanceSeek {
                     limiter.acquire();
                     Long currentTime = System.currentTimeMillis();
                     UUID uuid = UUID.randomUUID(); 
-                    RemoteCall<TransactionReceipt> insert = dbTest.insert(uuid.toString(), BigInteger.valueOf(1), "1");
+                    RemoteCall<TransactionReceipt> insert = ok.trans(BigInteger.valueOf(5));
                     TransactionReceipt transactionReceipt;
 					try {
 						 CompletableFuture<TransactionReceipt> sendAsync = insert.sendAsync();
 						 
 							 transactionReceipt = sendAsync.get();
-							 // 检查执行结果
-							 callback.onResponse(System.currentTimeMillis() - currentTime, dbTest, transactionReceipt);
+							 // 统计结果
+							 callback.onResponse(System.currentTimeMillis() - currentTime);
 						 
 					} catch (Exception e) {
 						e.printStackTrace();

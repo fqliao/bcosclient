@@ -9,7 +9,7 @@ import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class PerfomanceSeekCallback{
+public class PerfomanceOkCallback{
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private AtomicInteger finished = new AtomicInteger(0);
 	private Integer total = 0;
@@ -25,7 +25,7 @@ public class PerfomanceSeekCallback{
 		this.total = total;
 	}
 	
-	PerfomanceSeekCallback() {
+	PerfomanceOkCallback() {
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		
 	    timeArea.put(0, 0);
@@ -37,15 +37,9 @@ public class PerfomanceSeekCallback{
         timeArea.put(6, 0);
 	}
 	
-	public void onResponse(Long cost, DBTest dbTest, TransactionReceipt transactionReceipt) {
+	public void onResponse(Long cost) {
 		try {
 
-			// 检查执行结果
-			List<InsertResultEventResponse> insertResultEvents = dbTest.getInsertResultEvents(transactionReceipt);
-			if (insertResultEvents.get(0).count.intValue() != 1) {
-				System.out.println("交易执行错误!: " + String.valueOf(insertResultEvents.get(0).count.intValue()));
-			}
-			
 			if(cost <= 50) {
                 timeArea.put(0, timeArea.get(0) + 1);
             }

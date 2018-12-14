@@ -1,39 +1,22 @@
 package org.bcosliteclient;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigInteger;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import org.bcos.channel.client.Service;
-import org.bcos.web3j.abi.datatypes.Type;
-import org.bcos.web3j.abi.datatypes.Utf8String;
-import org.bcos.web3j.abi.datatypes.generated.Bytes32;
-import org.bcos.web3j.abi.datatypes.generated.Int256;
-import org.bcos.web3j.abi.datatypes.generated.Uint256;
-import org.bcos.web3j.crypto.Credentials;
-import org.bcos.web3j.crypto.ECKeyPair;
-import org.bcos.web3j.crypto.Keys;
-import org.bcos.web3j.protocol.Web3j;
-import org.bcos.web3j.protocol.channel.ChannelEthereumService;
-import org.bcos.web3j.protocol.core.methods.response.EthBlockNumber;
-import org.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.bcosliteclient.DBTest.InsertResultEventResponse;
-import org.bcosliteclient.DBTest.RemoveResultEventResponse;
-import org.bcosliteclient.DBTest.UpdateResultEventResponse;
+import org.fisco.bcos.channel.client.Service;
+import org.fisco.bcos.web3j.crypto.Credentials;
+import org.fisco.bcos.web3j.crypto.ECKeyPair;
+import org.fisco.bcos.web3j.crypto.Keys;
+import org.fisco.bcos.web3j.protocol.Web3j;
+import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
+import org.fisco.bcos.web3j.protocol.core.RemoteCall;
+import org.fisco.bcos.web3j.protocol.core.methods.response.EthBlockNumber;
+import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class OkClient {
-    static Logger logger = LoggerFactory.getLogger(DBClient.class);
+    static Logger logger = LoggerFactory.getLogger(OkClient.class);
     public static Web3j web3j;
     // 初始化交易参数
     public static java.math.BigInteger gasPrice = new BigInteger("1");
@@ -45,20 +28,20 @@ public class OkClient {
 
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void testOkAMDB(String[] args) throws InterruptedException, ExecutionException, IOException {
+    public static void testOkAMDB(String[] args) throws Exception {
 
-      Future<OkAMDB> futureDeploy = OkAMDB.deploy(web3j, credentials, gasPrice, gasLimit, initialWeiValue);
-      OkAMDB ok = futureDeploy.get();
+     @SuppressWarnings("deprecation")
+	 RemoteCall<OkD> deploy = OkD.deploy(web3j, credentials, gasPrice, gasLimit);
+     OkD ok = deploy.send();
     
-      int i = 1;
+      int i = 2;
       while(true)
       { 
           String from_accout = "0x"+i;
-          Future<TransactionReceipt> count =
-                  ok.trans(new Utf8String(from_accout), new Int256(15));
-          TransactionReceipt transactionReceipt = count.get();
-          Future<Int256> future = ok.get();
-          BigInteger num = future.get().getValue();
+          RemoteCall<TransactionReceipt> trans = ok.trans(from_accout, new BigInteger("5"));
+          trans.send();
+          RemoteCall<BigInteger> remoteCall = ok.get();
+          BigInteger num = remoteCall.send();
           System.out.println("num = "+num);
           i++;
       }
@@ -82,7 +65,7 @@ public class OkClient {
       channelEthereumService.setChannelService(service);
 
       // init webj client base on channelEthereumService
-      web3j = Web3j.build(channelEthereumService);
+      web3j = Web3j.build(channelEthereumService, 1);
       /*------------------init done start test--------------------------------*/
 
 

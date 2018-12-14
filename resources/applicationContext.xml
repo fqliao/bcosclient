@@ -21,40 +21,28 @@
 		</property>
 	</bean>
 	
-	<!-- 系统合约地址配置，在使用./web3sdk SystemProxy|AuthorityFilter等系统合约工具时需要配置 -->
-	<bean id="toolConf" class="org.bcos.contract.tools.ToolConf">
-		<property name="systemProxyAddress" value="0x919868496524eedc26dbb81915fa1547a20f8998" />
-		<property name="outPutpath" value="./output/" />
-	</bean>
-	
-	<!-- database and amdb node properties configuration-->
-	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
-        <property name="locations">  
-           <list>  
-              <value>classpath:amdb.properties</value>  
-            </list>  
-        </property>  
-    </bean> 
     
 	<!-- 区块链节点信息配置 -->
-	<bean id="channelService" class="org.bcos.channel.client.Service">
-		<property name="orgID" value="WB" /> <!-- 配置本机构名称 -->
-			<property name="allChannelConnections">
-				<map>
-					<entry key="WB"> <!-- 配置本机构的区块链节点列表（如有DMZ，则为区块链前置）-->
-						<bean class="org.bcos.channel.handler.ChannelConnections">
-							<property name="caCertPath" value="classpath:ca.crt" />
-							<property name="clientKeystorePath" value="classpath:client.keystore" />
-							<property name="keystorePassWord" value="123456" />
-							<property name="clientCertPassWord" value="123456" />
-	                        <property name="connectionsStr">
-								<list>
-									<value>${node.name}@${node.ip}:${node.listen_port}</value>
-								</list>
-							</property>
-						</bean>
-					</entry>
-				</map>
-			</property>
-		</bean>
+	<bean id="channelService" class="org.fisco.bcos.channel.client.Service">
+		<property name="groupId" value="2" />
+		<property name="orgID" value="fisco" />
+		<property name="connectSeconds" value="10" />
+		<property name="connectSleepPerMillis" value="10" />
+		<property name="allChannelConnections">
+			<map>
+				<entry key="fisco">
+					<bean class="org.fisco.bcos.channel.handler.ChannelConnections">
+						<property name="keystorePassWord" value="123456" />
+						<property name="clientCertPassWord" value="123456" />
+                        <property name="connectionsStr">
+							<list>
+                 				<!--[nodeid]@[ip]:[channelPort]-->
+								<value>node1@127.0.0.1:30301</value>
+							</list>
+						</property>
+                    </bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
 </beans>
