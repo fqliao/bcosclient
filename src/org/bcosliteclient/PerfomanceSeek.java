@@ -106,13 +106,13 @@ public class PerfomanceSeek {
                     Long currentTime = System.currentTimeMillis();
                     UUID uuid = UUID.randomUUID(); 
                     RemoteCall<TransactionReceipt> insert = dbTest.insert(uuid.toString(), BigInteger.valueOf(1), "1");
+                    System.out.println("key="+uuid.toString());
                     TransactionReceipt transactionReceipt;
 					try {
 						 CompletableFuture<TransactionReceipt> sendAsync = insert.sendAsync();
-						 
-							 transactionReceipt = sendAsync.get();
-							 // 检查执行结果
-							 callback.onResponse(System.currentTimeMillis() - currentTime, dbTest, transactionReceipt);
+						 transactionReceipt = sendAsync.get();
+						 // 检查执行结果
+						 callback.onResponse(System.currentTimeMillis() - currentTime, dbTest, transactionReceipt);
 						 
 					} catch (Exception e) {
 						e.printStackTrace();

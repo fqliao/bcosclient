@@ -17,6 +17,7 @@ import org.fisco.bcos.web3j.protocol.core.RemoteCall;
 import org.fisco.bcos.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tuples.generated.Tuple3;
+import org.fisco.bcos.web3j.utils.Numeric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -34,14 +35,18 @@ public class DBClient {
 
   /* deploy the contract,get address from blockchain */
   @SuppressWarnings("deprecation")
-public static void deployDBTest() throws Exception{
+public static void deployDBTest(){
 
 	RemoteCall<DBTest> deploy  = DBTest.deploy(web3j, credentials, gasPrice, gasLimit);
-    DBTest dbtest = deploy.send();
-    contractAddress = dbtest.getContractAddress();
-    
-    System.out.println("Deploy contract address: " + contractAddress);
-    logger.info("Deploy contract address: " + contractAddress);
+    DBTest dbtest;
+	try {
+		dbtest = deploy.send();
+		contractAddress = dbtest.getContractAddress();
+		System.out.println("Deploy contract address: " + contractAddress);
+		logger.info("Deploy contract address: " + contractAddress);
+	} catch (Exception e) {
+		System.out.println("deploy failed！ " + e.getMessage());;
+	}
     
   }
 
@@ -96,8 +101,8 @@ public static void deployDBTest() throws Exception{
               List<byte[]> value1 = lists.getValue1();
               List<BigInteger> value2 = lists.getValue2();
               List<byte[]> value3 = lists.getValue3();
-              logger.info("查询记录条数 = "+ value1.size());
-              System.out.println("查询记录条数 = "+ value1.size());
+              logger.info("record numbers = "+ value1.size());
+              System.out.println("record numbers = "+ value1.size());
               for (int i = 0; i < value1.size(); i++) {
                 String name = new String(value1.get(i));
                 logger.info("name = " + name);
@@ -176,16 +181,59 @@ public static void deployDBTest() throws Exception{
     service.run(); // run the daemon service
     // init the client keys
     keyPair = Keys.createEcKeyPair();
-    credentials = Credentials.create(keyPair);
+//    credentials = Credentials.create(keyPair);
+    String address = Numeric.prependHexPrefix(Keys.getAddress(keyPair));
+//    System.out.println(keyPair.getPrivateKey().toString(16));
+//    System.out.println("origin = "+ address);
+    String priviteKey1 = "3bed914595c159cbce70ec5fb6aff3d6797e0c5ee5a7a9224a21cae8932d84a4";
+    String origin1 = "0xf1585b8d0e08a0a00fff662e24d67ba95a438256";
+    String priviteKey2 = "ab40568a2f77b4cb70706b4c6119916a143eb75c0d618e5f69909af1f9f9695e";
+    String origin2 = "0xc0d0e6ccc0b44c12196266548bec4a3616160e7d";
+    String priviteKey3 = "d0fee0a4e3c545a9394965042f8f891b6e5482c212a7428ec175d6aed121353a";
+    String origin3 = "0x1600e34312edea101d8b41a3465f2e381b66baed";
+    try {
+    	String priviteKey = priviteKey1;
+    	String origin = origin1;
+    	switch(args[0])
+    	{
+    	case "1":
+    		priviteKey = priviteKey1;
+    		origin = origin1;
+    		break;
+    	case "2":
+    		priviteKey = priviteKey2;
+    		origin = origin2;
+    		break;
+    	case "3":
+    		priviteKey = priviteKey3;
+    		origin = origin3;
+    		break;
+    	default:
+    		System.out.println("Please provide 1 or 2 or 3 for specifying priviteKey.");
+    		System.exit(0);;
+    	}
+    	credentials = Credentials.create(priviteKey);
+        System.out.println("origin = "+ origin);
+    }
+    catch(Exception e)
+    {
+    	System.out.println("\nPlease provide priviteKeyNumber in the first paramters");
+    	System.exit(0);
+    }
 
+    
     logger.info("-----> start test !");
     logger.info("init AOMP ChannelEthereumService");
     ChannelEthereumService channelEthereumService = new ChannelEthereumService();
     channelEthereumService.setChannelService(service);
-
-    // init webj client base on channelEthereumService
-    web3j = Web3j.build(channelEthereumService);
-    /*------------------init done start test--------------------------------*/
+    try {
+    	web3j = Web3j.build(channelEthereumService, Integer.parseInt(args[1]));
+    }
+    catch(Exception e)
+    {
+    	System.out.println("\nPlease provide groupID in the second paramters");
+    	System.exit(0);
+    }
 
 
     // test get blocknumber,just optional steps
@@ -193,16 +241,18 @@ public static void deployDBTest() throws Exception{
     EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
     int startBlockNumber = ethBlockNumber.getBlockNumber().intValue();
     logger.info("-->Got ethBlockNumber:{}", startBlockNumber);
-    if(args.length > 0)
+    if(args.length > 2)
     {
-        if("deploy".equals(args[0]))
+        if("deploy".equals(args[2]))
         {
             deployDBTest();
         }
         else
         {
-            logger.info("testDBTest");
-            testDBTest(args); 
+            String[] params = new String[args.length-2];
+            for(int i = 0; i < params.length; i++)
+            	params[i] = args[i+2];
+            testDBTest(params); 
         }
     }
     else
