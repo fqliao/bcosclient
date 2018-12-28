@@ -1,7 +1,7 @@
 
 contract DBFactory {
     function openDB(string) public constant returns (DB);
-    function createTable(string,string,string) public constant returns(DB);
+    function createTable(string,string,string) public constant returns(int);
 }
 
 //查询条件
