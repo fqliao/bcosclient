@@ -1,8 +1,12 @@
 package org.bcosliteclient;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 import org.bcosliteclient.DBTest.CreateResultEventResponse;
 import org.bcosliteclient.DBTest.InsertResultEventResponse;
@@ -18,11 +22,15 @@ import org.fisco.bcos.web3j.protocol.core.RemoteCall;
 import org.fisco.bcos.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tuples.generated.Tuple3;
+import org.fisco.bcos.web3j.tx.gas.ContractGasProvider;
+import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
 import org.fisco.bcos.web3j.utils.Numeric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 public class DBClient {
 	static Logger logger = LoggerFactory.getLogger(DBClient.class);
@@ -51,7 +59,13 @@ public class DBClient {
 			}
 			else
 			{
-				System.out.println("deploy contract successful!");
+		        Properties prop = new Properties();
+		        prop.setProperty("address", contractAddress);
+		        final Resource contractResource = new ClassPathResource("contract.properties");
+		        FileOutputStream fos = new FileOutputStream(contractResource.getFile());
+		        prop.store(fos, "contract address");
+		        
+		        System.out.println("deploy contract successful!");
 			}
 		} catch (Exception e) {
 			System.out.println("deploy failed! " + e.getMessage());
@@ -63,8 +77,14 @@ public class DBClient {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void testDBTest(String[] args) throws Exception {
 
-		RemoteCall<DBTest> deploy = DBTest.deploy(web3j, credentials, gasPrice, gasLimit);
-		DBTest dbtest = deploy.send();
+		Properties prop = new Properties();
+		final Resource contractResource = new ClassPathResource("contract.properties");
+		InputStream fis = contractResource.getInputStream();
+        prop.load(fis);
+        String contractAddress = prop.getProperty("address");
+        
+		ContractGasProvider contractGasProvider = new StaticGasProvider(gasPrice, gasLimit);;
+		DBTest dbtest = DBTest.load(contractAddress, web3j, credentials, contractGasProvider);
 		// 创建表
 		if ("create".equals(args[0])) {
 			TransactionReceipt receipt = dbtest.create().send();
@@ -76,11 +96,19 @@ public class DBClient {
 			}
 			CreateResultEventResponse createResultEventResponse = createResultEvents.get(0);
 			int createCount = createResultEventResponse.count.intValue();
-			if (createCount == 1) {
+			switch (createCount)
+			{
+			case 255:
+				System.out.println("non-authorized to create t_test table.");
+				break;
+			case 0:
+				System.out.println("t_test table already exist.");
+				break;
+			case 1:
 				System.out.println("create t_test table completed.");
-			} else {
-				System.out.println("create t_test table failed.");
+				break;
 			}
+
 		}
 		// 增
 		else if ("insert".equals(args[0])) {
@@ -102,7 +130,7 @@ public class DBClient {
 					System.out.println("t_test table does not exist.");
 				}
 			} else {
-				System.out.println("\nPlease enter as follow example:\n insert fruit 1 apple");
+				System.out.println("\nPlease enter as follow example:\n 1 1 insert fruit 1 apple");
 			}
 		}
 		// 查
@@ -132,7 +160,7 @@ public class DBClient {
 					System.out.println("record numbers = 0");
 				}
 			} else {
-				System.out.println("\nPlease enter as follow example:\n select fruit");
+				System.out.println("\nPlease enter as follow example:\n 1 1 select fruit");
 			}
 		}
 		// 改
@@ -155,7 +183,7 @@ public class DBClient {
 					System.out.println("t_test table does not exist.");
 				}
 			} else {
-				System.out.println("\nPlease enter as follow example:\n update fruit 1 orange");
+				System.out.println("\nPlease enter as follow example:\n 1 1 update fruit 1 orange");
 			}
 		}
 		// 删
@@ -175,7 +203,7 @@ public class DBClient {
 					System.out.println("t_test table does not exist.");
 				}
 			} else {
-				System.out.println("\nPlease enter as follow example:\n remove fruit 1");
+				System.out.println("\nPlease enter as follow example:\n 1 1 remove fruit 1");
 			}
 		} else {
 			System.out.println("\nPlease choose follow commands:\n deploy, create, insert, select, update or remove");
@@ -201,6 +229,7 @@ public class DBClient {
 		String origin2 = "0xc0d0e6ccc0b44c12196266548bec4a3616160e7d";
 		String priviteKey3 = "d0fee0a4e3c545a9394965042f8f891b6e5482c212a7428ec175d6aed121353a";
 		String origin3 = "0x1600e34312edea101d8b41a3465f2e381b66baed";
+		System.out.println();
 		try {
 			String priviteKey = priviteKey1;
 			String origin = origin1;
@@ -224,6 +253,7 @@ public class DBClient {
 			}
 			credentials = Credentials.create(priviteKey);
 			System.out.println("tx.origin = " + origin);
+			System.out.println();
 		} catch (Exception e) {
 			System.out.println("\nPlease provide priviteKeyNumber in the first paramters");
 			System.exit(0);
@@ -245,6 +275,7 @@ public class DBClient {
 		EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
 		int startBlockNumber = ethBlockNumber.getBlockNumber().intValue();
 		logger.info("-->Got ethBlockNumber:{}", startBlockNumber);
+
 		if (args.length > 2) {
 			if ("deploy".equals(args[2])) {
 				deployDBTest();
