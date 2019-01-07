@@ -21,6 +21,7 @@ import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
 import org.fisco.bcos.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.fisco.bcos.web3j.protocol.exceptions.TransactionException;
 import org.fisco.bcos.web3j.tuples.generated.Tuple3;
 import org.fisco.bcos.web3j.tx.gas.ContractGasProvider;
 import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
@@ -53,12 +54,12 @@ public class DBClient {
 			contractAddress = dbtest.getContractAddress();
 			System.out.println("deploy contract address: " + contractAddress);
 			logger.info("deploy contract address: " + contractAddress);
-			if("0x0000000000000000000000000000000000000000".equals(contractAddress))
-			{
-				System.out.println("deploy contract failed!");
-			}
-			else
-			{
+//			if("0x0000000000000000000000000000000000000000".equals(contractAddress))
+//			{
+//				System.out.println("deploy contract failed!");
+//			}
+//			else
+//			{
 		        Properties prop = new Properties();
 		        prop.setProperty("address", contractAddress);
 		        final Resource contractResource = new ClassPathResource("contract.properties");
@@ -66,10 +67,20 @@ public class DBClient {
 		        prop.store(fos, "contract address");
 		        
 		        System.out.println("deploy contract successful!");
+//			}
+		} 
+		catch (TransactionException e) {
+			if("0x19".equals(e.getStatus()))
+			{
+				System.out.println("non-authorized to deploy contracts!");
 			}
-		} catch (Exception e) {
+			else
+			{
+				System.out.println(e.getMessage());
+			}
+		}
+		catch (Exception e) {
 			System.out.println("deploy failed! " + e.getMessage());
-			;
 		}
 
 	}
