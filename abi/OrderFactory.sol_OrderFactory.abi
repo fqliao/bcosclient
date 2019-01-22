@@ -1,0 +1,1 @@
+[{"constant":false,"inputs":[{"name":"date","type":"bytes32"},{"name":"bytesArgs","type":"bytes32[]"},{"name":"intArgs","type":"int256[]"}],"name":"create","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"}]
