@@ -8,7 +8,7 @@ import org.fisco.bcos.web3j.crypto.Keys;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
-import org.fisco.bcos.web3j.protocol.core.methods.response.EthBlockNumber;
+import org.fisco.bcos.web3j.protocol.core.methods.response.BlockNumber;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +71,7 @@ public class OkClient {
 
       // test get blocknumber,just optional steps
 
-      EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
+      BlockNumber ethBlockNumber = web3j.getBlockNumber().sendAsync().get();
       int startBlockNumber = ethBlockNumber.getBlockNumber().intValue();
       logger.info("-->Got ethBlockNumber:{}", startBlockNumber);
       logger.info("testOkAMDB");
@@ -79,7 +79,7 @@ public class OkClient {
       testOkAMDB(args); 
 
       /* print block number after some transactions */
-      ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
+      ethBlockNumber = web3j.getBlockNumber().sendAsync().get();
       int finishBlockNumber = ethBlockNumber.getBlockNumber().intValue();
       logger.info(
           "<--start blockNumber = " + startBlockNumber + ",finish blocknmber=" + finishBlockNumber);

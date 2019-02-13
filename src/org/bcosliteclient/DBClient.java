@@ -19,13 +19,14 @@ import org.fisco.bcos.web3j.crypto.Keys;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
-import org.fisco.bcos.web3j.protocol.core.methods.response.EthBlockNumber;
+import org.fisco.bcos.web3j.protocol.core.methods.response.BlockNumber;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.protocol.exceptions.TransactionException;
 import org.fisco.bcos.web3j.tuples.generated.Tuple3;
 import org.fisco.bcos.web3j.tx.gas.ContractGasProvider;
 import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
 import org.fisco.bcos.web3j.utils.Numeric;
+import org.fisco.bcos.web3j.utils.SolToJavaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -231,9 +232,10 @@ public class DBClient {
 		// init the client keys
 		keyPair = Keys.createEcKeyPair();
 //    credentials = Credentials.create(keyPair);
-		String address = Numeric.prependHexPrefix(Keys.getAddress(keyPair));
-//    System.out.println(keyPair.getPrivateKey().toString(16));
-//    System.out.println("origin = "+ address);
+//		String address = Numeric.prependHexPrefix(Keys.getAddress(keyPair));
+		String address = Numeric.prependHexPrefix("3bed914595c159cbce70ec5fb6aff3d6797e0c5ee5a7a9224a21cae8932d84a4");
+    System.out.println(keyPair.getPrivateKey().toString(16));
+    System.out.println("origin = "+ address);
 		String priviteKey1 = "3bed914595c159cbce70ec5fb6aff3d6797e0c5ee5a7a9224a21cae8932d84a4";
 		String origin1 = "0xf1585b8d0e08a0a00fff662e24d67ba95a438256";
 		String priviteKey2 = "ab40568a2f77b4cb70706b4c6119916a143eb75c0d618e5f69909af1f9f9695e";
@@ -283,7 +285,7 @@ public class DBClient {
 
 		// test get blocknumber,just optional steps
 
-		EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
+		BlockNumber ethBlockNumber = web3j.getBlockNumber().sendAsync().get();
 		int startBlockNumber = ethBlockNumber.getBlockNumber().intValue();
 		logger.info("-->Got ethBlockNumber:{}", startBlockNumber);
 
@@ -299,9 +301,9 @@ public class DBClient {
 		} else {
 			System.out.println("\nPlease choose follow commands:\n deploy, create, insert, select, update or remove");
 		}
-
+        SolToJavaUtil.convert("src/contract", "src/solidity", "src", "org.bcosliteclient.temp");
 		/* print block number after some transactions */
-		ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
+		ethBlockNumber = web3j.getBlockNumber().sendAsync().get();
 		int finishBlockNumber = ethBlockNumber.getBlockNumber().intValue();
 		logger.info("<--start blockNumber = " + startBlockNumber + ",finish blocknmber=" + finishBlockNumber);
 		System.exit(0);
