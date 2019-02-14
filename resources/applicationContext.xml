@@ -11,18 +11,29 @@
          http://www.springframework.org/schema/aop   
     http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
-	<bean id="channelService" class="org.fisco.bcos.channel.client.Service">
+	<bean id="encryptType" class="org.fisco.bcos.web3j.crypto.EncryptType">
+		<constructor-arg value="0"/> <!-- 0:standard 1:guomi -->
+	</bean>
+
+	<bean id="groupChannelConnectionsConfig" class="org.fisco.bcos.channel.handler.GroupChannelConnectionsConfig">
+		<property name="allChannelConnections">
+			<list>
+				<bean id="group1"  class="org.fisco.bcos.channel.handler.ChannelConnections">
+					<property name="groupId" value="1" />
+					<property name="connectionsStr">
+						<list>
+							<value>127.0.0.1:20200</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="channelService" class="org.fisco.bcos.channel.client.Service" depends-on="groupChannelConnectionsConfig">
 		<property name="groupId" value="1" />
 		<property name="orgID" value="fisco" />
-		<property name="allChannelConnections">
-				<bean class="org.fisco.bcos.channel.handler.ChannelConnections">
-                    <property name="connectionsStr">
-						<list>
-							<value>127.0.0.1:30301</value>
-						</list>
-				</property>
-                </bean>
-		</property>
+		<property name="allChannelConnections" ref="groupChannelConnectionsConfig"></property>
 	</bean>
 
 </beans>

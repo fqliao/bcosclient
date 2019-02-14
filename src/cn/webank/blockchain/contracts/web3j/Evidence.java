@@ -23,7 +23,7 @@ import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.core.DefaultBlockParameter;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
-import org.fisco.bcos.web3j.protocol.core.methods.request.EthFilter;
+import org.fisco.bcos.web3j.protocol.core.methods.request.BcosFilter;
 import org.fisco.bcos.web3j.protocol.core.methods.response.Log;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tuples.generated.Tuple7;
@@ -181,8 +181,8 @@ public class Evidence extends Contract {
         return responses;
     }
 
-    public Flowable<AddSignaturesEventEventResponse> addSignaturesEventEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, AddSignaturesEventEventResponse>() {
+    public Flowable<AddSignaturesEventEventResponse> addSignaturesEventEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, AddSignaturesEventEventResponse>() {
             @Override
             public AddSignaturesEventEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(ADDSIGNATURESEVENT_EVENT, log);
@@ -200,7 +200,7 @@ public class Evidence extends Contract {
     }
 
     public Flowable<AddSignaturesEventEventResponse> addSignaturesEventEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(ADDSIGNATURESEVENT_EVENT));
         return addSignaturesEventEventFlowable(filter);
     }
@@ -223,8 +223,8 @@ public class Evidence extends Contract {
         return responses;
     }
 
-    public Flowable<NewSignaturesEventEventResponse> newSignaturesEventEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, NewSignaturesEventEventResponse>() {
+    public Flowable<NewSignaturesEventEventResponse> newSignaturesEventEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, NewSignaturesEventEventResponse>() {
             @Override
             public NewSignaturesEventEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(NEWSIGNATURESEVENT_EVENT, log);
@@ -243,7 +243,7 @@ public class Evidence extends Contract {
     }
 
     public Flowable<NewSignaturesEventEventResponse> newSignaturesEventEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(NEWSIGNATURESEVENT_EVENT));
         return newSignaturesEventEventFlowable(filter);
     }
@@ -266,8 +266,8 @@ public class Evidence extends Contract {
         return responses;
     }
 
-    public Flowable<ErrorNewSignaturesEventEventResponse> errorNewSignaturesEventEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, ErrorNewSignaturesEventEventResponse>() {
+    public Flowable<ErrorNewSignaturesEventEventResponse> errorNewSignaturesEventEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, ErrorNewSignaturesEventEventResponse>() {
             @Override
             public ErrorNewSignaturesEventEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(ERRORNEWSIGNATURESEVENT_EVENT, log);
@@ -286,7 +286,7 @@ public class Evidence extends Contract {
     }
 
     public Flowable<ErrorNewSignaturesEventEventResponse> errorNewSignaturesEventEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(ERRORNEWSIGNATURESEVENT_EVENT));
         return errorNewSignaturesEventEventFlowable(filter);
     }
@@ -309,8 +309,8 @@ public class Evidence extends Contract {
         return responses;
     }
 
-    public Flowable<ErrorAddSignaturesEventEventResponse> errorAddSignaturesEventEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, ErrorAddSignaturesEventEventResponse>() {
+    public Flowable<ErrorAddSignaturesEventEventResponse> errorAddSignaturesEventEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, ErrorAddSignaturesEventEventResponse>() {
             @Override
             public ErrorAddSignaturesEventEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(ERRORADDSIGNATURESEVENT_EVENT, log);
@@ -329,7 +329,7 @@ public class Evidence extends Contract {
     }
 
     public Flowable<ErrorAddSignaturesEventEventResponse> errorAddSignaturesEventEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(ERRORADDSIGNATURESEVENT_EVENT));
         return errorAddSignaturesEventEventFlowable(filter);
     }
@@ -351,8 +351,8 @@ public class Evidence extends Contract {
         return responses;
     }
 
-    public Flowable<AddRepeatSignaturesEventEventResponse> addRepeatSignaturesEventEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, AddRepeatSignaturesEventEventResponse>() {
+    public Flowable<AddRepeatSignaturesEventEventResponse> addRepeatSignaturesEventEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, AddRepeatSignaturesEventEventResponse>() {
             @Override
             public AddRepeatSignaturesEventEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(ADDREPEATSIGNATURESEVENT_EVENT, log);
@@ -370,7 +370,7 @@ public class Evidence extends Contract {
     }
 
     public Flowable<AddRepeatSignaturesEventEventResponse> addRepeatSignaturesEventEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(ADDREPEATSIGNATURESEVENT_EVENT));
         return addRepeatSignaturesEventEventFlowable(filter);
     }
@@ -392,8 +392,8 @@ public class Evidence extends Contract {
         return responses;
     }
 
-    public Flowable<ErrorRepeatSignaturesEventEventResponse> errorRepeatSignaturesEventEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, ErrorRepeatSignaturesEventEventResponse>() {
+    public Flowable<ErrorRepeatSignaturesEventEventResponse> errorRepeatSignaturesEventEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, ErrorRepeatSignaturesEventEventResponse>() {
             @Override
             public ErrorRepeatSignaturesEventEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(ERRORREPEATSIGNATURESEVENT_EVENT, log);
@@ -411,7 +411,7 @@ public class Evidence extends Contract {
     }
 
     public Flowable<ErrorRepeatSignaturesEventEventResponse> errorRepeatSignaturesEventEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(ERRORREPEATSIGNATURESEVENT_EVENT));
         return errorRepeatSignaturesEventEventFlowable(filter);
     }

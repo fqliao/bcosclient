@@ -17,10 +17,6 @@ import org.fisco.bcos.web3j.crypto.Keys;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
-import org.fisco.bcos.web3j.protocol.core.methods.response.EthBlockNumber;
-import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.fisco.bcos.web3j.protocol.exceptions.TransactionException;
-import org.fisco.bcos.web3j.tuples.generated.Tuple3;
 import org.fisco.bcos.web3j.tx.gas.ContractGasProvider;
 import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
 import org.fisco.bcos.web3j.utils.Numeric;
@@ -31,10 +27,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import cn.webank.blockchain.contracts.web3j.DBTest.CreateResultEventResponse;
-import cn.webank.blockchain.contracts.web3j.DBTest.InsertResultEventResponse;
-import cn.webank.blockchain.contracts.web3j.DBTest.RemoveResultEventResponse;
-import cn.webank.blockchain.contracts.web3j.DBTest.UpdateResultEventResponse;
 
 public class DeployClient {
 	static Logger logger = LoggerFactory.getLogger(DeployClient.class);

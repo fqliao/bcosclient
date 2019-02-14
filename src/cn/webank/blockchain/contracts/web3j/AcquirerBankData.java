@@ -23,7 +23,7 @@ import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.core.DefaultBlockParameter;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
-import org.fisco.bcos.web3j.protocol.core.methods.request.EthFilter;
+import org.fisco.bcos.web3j.protocol.core.methods.request.BcosFilter;
 import org.fisco.bcos.web3j.protocol.core.methods.response.Log;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tuples.generated.Tuple2;
@@ -265,8 +265,8 @@ public class AcquirerBankData extends Contract {
         return responses;
     }
 
-    public Flowable<TransRetLogEventResponse> transRetLogEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, TransRetLogEventResponse>() {
+    public Flowable<TransRetLogEventResponse> transRetLogEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, TransRetLogEventResponse>() {
             @Override
             public TransRetLogEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TRANSRETLOG_EVENT, log);
@@ -281,7 +281,7 @@ public class AcquirerBankData extends Contract {
     }
 
     public Flowable<TransRetLogEventResponse> transRetLogEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(TRANSRETLOG_EVENT));
         return transRetLogEventFlowable(filter);
     }
@@ -300,8 +300,8 @@ public class AcquirerBankData extends Contract {
         return responses;
     }
 
-    public Flowable<DebugRetLogEventResponse> debugRetLogEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, DebugRetLogEventResponse>() {
+    public Flowable<DebugRetLogEventResponse> debugRetLogEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, DebugRetLogEventResponse>() {
             @Override
             public DebugRetLogEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(DEBUGRETLOG_EVENT, log);
@@ -316,7 +316,7 @@ public class AcquirerBankData extends Contract {
     }
 
     public Flowable<DebugRetLogEventResponse> debugRetLogEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(DEBUGRETLOG_EVENT));
         return debugRetLogEventFlowable(filter);
     }

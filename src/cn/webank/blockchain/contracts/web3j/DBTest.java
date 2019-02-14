@@ -19,7 +19,7 @@ import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.core.DefaultBlockParameter;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
-import org.fisco.bcos.web3j.protocol.core.methods.request.EthFilter;
+import org.fisco.bcos.web3j.protocol.core.methods.request.BcosFilter;
 import org.fisco.bcos.web3j.protocol.core.methods.response.Log;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tuples.generated.Tuple3;
@@ -153,8 +153,8 @@ public class DBTest extends Contract {
         return responses;
     }
 
-    public Flowable<CreateResultEventResponse> createResultEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, CreateResultEventResponse>() {
+    public Flowable<CreateResultEventResponse> createResultEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, CreateResultEventResponse>() {
             @Override
             public CreateResultEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(CREATERESULT_EVENT, log);
@@ -167,7 +167,7 @@ public class DBTest extends Contract {
     }
 
     public Flowable<CreateResultEventResponse> createResultEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(CREATERESULT_EVENT));
         return createResultEventFlowable(filter);
     }
@@ -184,8 +184,8 @@ public class DBTest extends Contract {
         return responses;
     }
 
-    public Flowable<InsertResultEventResponse> insertResultEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, InsertResultEventResponse>() {
+    public Flowable<InsertResultEventResponse> insertResultEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, InsertResultEventResponse>() {
             @Override
             public InsertResultEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(INSERTRESULT_EVENT, log);
@@ -198,7 +198,7 @@ public class DBTest extends Contract {
     }
 
     public Flowable<InsertResultEventResponse> insertResultEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(INSERTRESULT_EVENT));
         return insertResultEventFlowable(filter);
     }
@@ -215,8 +215,8 @@ public class DBTest extends Contract {
         return responses;
     }
 
-    public Flowable<UpdateResultEventResponse> updateResultEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, UpdateResultEventResponse>() {
+    public Flowable<UpdateResultEventResponse> updateResultEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, UpdateResultEventResponse>() {
             @Override
             public UpdateResultEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(UPDATERESULT_EVENT, log);
@@ -229,7 +229,7 @@ public class DBTest extends Contract {
     }
 
     public Flowable<UpdateResultEventResponse> updateResultEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(UPDATERESULT_EVENT));
         return updateResultEventFlowable(filter);
     }
@@ -246,8 +246,8 @@ public class DBTest extends Contract {
         return responses;
     }
 
-    public Flowable<RemoveResultEventResponse> removeResultEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, RemoveResultEventResponse>() {
+    public Flowable<RemoveResultEventResponse> removeResultEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, RemoveResultEventResponse>() {
             @Override
             public RemoveResultEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(REMOVERESULT_EVENT, log);
@@ -260,7 +260,7 @@ public class DBTest extends Contract {
     }
 
     public Flowable<RemoveResultEventResponse> removeResultEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(REMOVERESULT_EVENT));
         return removeResultEventFlowable(filter);
     }
@@ -279,8 +279,8 @@ public class DBTest extends Contract {
         return responses;
     }
 
-    public Flowable<ReadResultEventResponse> readResultEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, ReadResultEventResponse>() {
+    public Flowable<ReadResultEventResponse> readResultEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, ReadResultEventResponse>() {
             @Override
             public ReadResultEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(READRESULT_EVENT, log);
@@ -295,7 +295,7 @@ public class DBTest extends Contract {
     }
 
     public Flowable<ReadResultEventResponse> readResultEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(READRESULT_EVENT));
         return readResultEventFlowable(filter);
     }

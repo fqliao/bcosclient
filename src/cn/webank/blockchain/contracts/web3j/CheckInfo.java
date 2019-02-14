@@ -22,7 +22,7 @@ import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.core.DefaultBlockParameter;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
-import org.fisco.bcos.web3j.protocol.core.methods.request.EthFilter;
+import org.fisco.bcos.web3j.protocol.core.methods.request.BcosFilter;
 import org.fisco.bcos.web3j.protocol.core.methods.response.Log;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tuples.generated.Tuple3;
@@ -491,8 +491,8 @@ public class CheckInfo extends Contract {
         return responses;
     }
 
-    public Flowable<DebugOrderLogEventResponse> debugOrderLogEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, DebugOrderLogEventResponse>() {
+    public Flowable<DebugOrderLogEventResponse> debugOrderLogEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, DebugOrderLogEventResponse>() {
             @Override
             public DebugOrderLogEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(DEBUGORDERLOG_EVENT, log);
@@ -505,7 +505,7 @@ public class CheckInfo extends Contract {
     }
 
     public Flowable<DebugOrderLogEventResponse> debugOrderLogEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(DEBUGORDERLOG_EVENT));
         return debugOrderLogEventFlowable(filter);
     }

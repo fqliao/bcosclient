@@ -22,7 +22,7 @@ import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.core.DefaultBlockParameter;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
-import org.fisco.bcos.web3j.protocol.core.methods.request.EthFilter;
+import org.fisco.bcos.web3j.protocol.core.methods.request.BcosFilter;
 import org.fisco.bcos.web3j.protocol.core.methods.response.Log;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tx.Contract;
@@ -134,8 +134,8 @@ public class EvidenceSignersData extends Contract {
         return responses;
     }
 
-    public Flowable<NewEvidenceEventEventResponse> newEvidenceEventEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, NewEvidenceEventEventResponse>() {
+    public Flowable<NewEvidenceEventEventResponse> newEvidenceEventEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, NewEvidenceEventEventResponse>() {
             @Override
             public NewEvidenceEventEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(NEWEVIDENCEEVENT_EVENT, log);
@@ -148,7 +148,7 @@ public class EvidenceSignersData extends Contract {
     }
 
     public Flowable<NewEvidenceEventEventResponse> newEvidenceEventEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(NEWEVIDENCEEVENT_EVENT));
         return newEvidenceEventEventFlowable(filter);
     }

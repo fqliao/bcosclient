@@ -24,7 +24,7 @@ import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.core.DefaultBlockParameter;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
-import org.fisco.bcos.web3j.protocol.core.methods.request.EthFilter;
+import org.fisco.bcos.web3j.protocol.core.methods.request.BcosFilter;
 import org.fisco.bcos.web3j.protocol.core.methods.response.Log;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tuples.generated.Tuple3;
@@ -389,8 +389,8 @@ public class ClearCenter extends Contract {
         return responses;
     }
 
-    public Flowable<TransRetLogEventResponse> transRetLogEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, TransRetLogEventResponse>() {
+    public Flowable<TransRetLogEventResponse> transRetLogEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, TransRetLogEventResponse>() {
             @Override
             public TransRetLogEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TRANSRETLOG_EVENT, log);
@@ -405,7 +405,7 @@ public class ClearCenter extends Contract {
     }
 
     public Flowable<TransRetLogEventResponse> transRetLogEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(TRANSRETLOG_EVENT));
         return transRetLogEventFlowable(filter);
     }
@@ -423,8 +423,8 @@ public class ClearCenter extends Contract {
         return responses;
     }
 
-    public Flowable<AccountBalancetLogEventResponse> accountBalancetLogEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, AccountBalancetLogEventResponse>() {
+    public Flowable<AccountBalancetLogEventResponse> accountBalancetLogEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, AccountBalancetLogEventResponse>() {
             @Override
             public AccountBalancetLogEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(ACCOUNTBALANCETLOG_EVENT, log);
@@ -438,7 +438,7 @@ public class ClearCenter extends Contract {
     }
 
     public Flowable<AccountBalancetLogEventResponse> accountBalancetLogEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(ACCOUNTBALANCETLOG_EVENT));
         return accountBalancetLogEventFlowable(filter);
     }
@@ -458,8 +458,8 @@ public class ClearCenter extends Contract {
         return responses;
     }
 
-    public Flowable<ConsumeLogEventResponse> consumeLogEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, ConsumeLogEventResponse>() {
+    public Flowable<ConsumeLogEventResponse> consumeLogEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, ConsumeLogEventResponse>() {
             @Override
             public ConsumeLogEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(CONSUMELOG_EVENT, log);
@@ -475,7 +475,7 @@ public class ClearCenter extends Contract {
     }
 
     public Flowable<ConsumeLogEventResponse> consumeLogEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(CONSUMELOG_EVENT));
         return consumeLogEventFlowable(filter);
     }
@@ -493,8 +493,8 @@ public class ClearCenter extends Contract {
         return responses;
     }
 
-    public Flowable<OrgAccrualEventResponse> orgAccrualEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, OrgAccrualEventResponse>() {
+    public Flowable<OrgAccrualEventResponse> orgAccrualEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, OrgAccrualEventResponse>() {
             @Override
             public OrgAccrualEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(ORGACCRUAL_EVENT, log);
@@ -508,7 +508,7 @@ public class ClearCenter extends Contract {
     }
 
     public Flowable<OrgAccrualEventResponse> orgAccrualEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(ORGACCRUAL_EVENT));
         return orgAccrualEventFlowable(filter);
     }
@@ -525,8 +525,8 @@ public class ClearCenter extends Contract {
         return responses;
     }
 
-    public Flowable<DebugLogEventResponse> debugLogEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, DebugLogEventResponse>() {
+    public Flowable<DebugLogEventResponse> debugLogEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, DebugLogEventResponse>() {
             @Override
             public DebugLogEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(DEBUGLOG_EVENT, log);
@@ -539,7 +539,7 @@ public class ClearCenter extends Contract {
     }
 
     public Flowable<DebugLogEventResponse> debugLogEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(DEBUGLOG_EVENT));
         return debugLogEventFlowable(filter);
     }
@@ -556,8 +556,8 @@ public class ClearCenter extends Contract {
         return responses;
     }
 
-    public Flowable<DebugOrderLogEventResponse> debugOrderLogEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, DebugOrderLogEventResponse>() {
+    public Flowable<DebugOrderLogEventResponse> debugOrderLogEventFlowable(BcosFilter filter) {
+        return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, DebugOrderLogEventResponse>() {
             @Override
             public DebugOrderLogEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(DEBUGORDERLOG_EVENT, log);
@@ -570,7 +570,7 @@ public class ClearCenter extends Contract {
     }
 
     public Flowable<DebugOrderLogEventResponse> debugOrderLogEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        BcosFilter filter = new BcosFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(DEBUGORDERLOG_EVENT));
         return debugOrderLogEventFlowable(filter);
     }
