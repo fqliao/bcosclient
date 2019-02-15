@@ -55,20 +55,15 @@ public class DBClient {
 			contractAddress = dbtest.getContractAddress();
 			System.out.println("deploy contract address: " + contractAddress);
 			logger.info("deploy contract address: " + contractAddress);
-//			if("0x0000000000000000000000000000000000000000".equals(contractAddress))
-//			{
-//				System.out.println("deploy contract failed!");
-//			}
-//			else
-//			{
-		        Properties prop = new Properties();
-		        prop.setProperty("address", contractAddress);
-		        final Resource contractResource = new ClassPathResource("contract.properties");
-		        FileOutputStream fos = new FileOutputStream(contractResource.getFile());
-		        prop.store(fos, "contract address");
-		        
-		        System.out.println("deploy contract successful!");
-//			}
+
+	        Properties prop = new Properties();
+	        prop.setProperty("address", contractAddress);
+	        final Resource contractResource = new ClassPathResource("contract.properties");
+	        FileOutputStream fos = new FileOutputStream(contractResource.getFile());
+	        prop.store(fos, "contract address");
+	        
+	        System.out.println("deploy contract successful!");
+
 		} 
 		catch (TransactionException e) {
 			if("0x19".equals(e.getStatus()))
