@@ -228,9 +228,6 @@ public class DBClient {
 		keyPair = Keys.createEcKeyPair();
 //    credentials = Credentials.create(keyPair);
 //		String address = Numeric.prependHexPrefix(Keys.getAddress(keyPair));
-		String address = Numeric.prependHexPrefix("3bed914595c159cbce70ec5fb6aff3d6797e0c5ee5a7a9224a21cae8932d84a4");
-    System.out.println(keyPair.getPrivateKey().toString(16));
-    System.out.println("origin = "+ address);
 		String priviteKey1 = "3bed914595c159cbce70ec5fb6aff3d6797e0c5ee5a7a9224a21cae8932d84a4";
 		String origin1 = "0xf1585b8d0e08a0a00fff662e24d67ba95a438256";
 		String priviteKey2 = "ab40568a2f77b4cb70706b4c6119916a143eb75c0d618e5f69909af1f9f9695e";
@@ -296,7 +293,6 @@ public class DBClient {
 		} else {
 			System.out.println("\nPlease choose follow commands:\n deploy, create, insert, select, update or remove");
 		}
-        SolToJavaUtil.convert("src/contract", "src/solidity", "src", "org.bcosliteclient.temp");
 		/* print block number after some transactions */
 		ethBlockNumber = web3j.getBlockNumber().sendAsync().get();
 		int finishBlockNumber = ethBlockNumber.getBlockNumber().intValue();
