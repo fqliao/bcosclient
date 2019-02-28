@@ -83,7 +83,7 @@ jar {
 	exclude '**/*.xml'
 	exclude '**/*.properties'
 	exclude '**/*.crt'
-	exclude '**/*.p12'
+	exclude '**/*.key'
 
     doLast {
 		copy {
