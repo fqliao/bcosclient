@@ -1,4 +1,4 @@
-package org.bcosliteclient;
+package org.bcos.student.score;
 
 import io.reactivex.Flowable;
 import java.math.BigInteger;
