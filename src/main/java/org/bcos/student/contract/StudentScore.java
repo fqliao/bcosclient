@@ -1,4 +1,4 @@
-package org.bcos.student.score.contract;
+package org.bcos.student.contract;
 
 import io.reactivex.Flowable;
 import java.math.BigInteger;

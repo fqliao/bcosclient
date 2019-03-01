@@ -1,9 +1,9 @@
-package org.bcos.student.score.service;
+package org.bcos.student.service;
 
-import org.bcos.student.score.contract.StudentScore.InsertResultEventResponse;
-import org.bcos.student.score.contract.StudentScore.RemoveResultEventResponse;
-import org.bcos.student.score.contract.StudentScore.UpdateResultEventResponse;
-import org.bcos.student.score.contract.StudentScore;
+import org.bcos.student.contract.StudentScore;
+import org.bcos.student.contract.StudentScore.InsertResultEventResponse;
+import org.bcos.student.contract.StudentScore.RemoveResultEventResponse;
+import org.bcos.student.contract.StudentScore.UpdateResultEventResponse;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;

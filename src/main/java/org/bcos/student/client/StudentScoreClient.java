@@ -1,4 +1,4 @@
-package org.bcos.student.score.client;
+package org.bcos.student.client;
 
 import java.io.FileOutputStream;
 import java.math.BigInteger;
@@ -7,8 +7,8 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.bcos.student.score.contract.StudentScore;
-import org.bcos.student.score.service.StudentScoreService;
+import org.bcos.student.contract.StudentScore;
+import org.bcos.student.service.StudentScoreService;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Keys;
