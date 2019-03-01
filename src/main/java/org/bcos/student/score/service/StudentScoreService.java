@@ -72,7 +72,7 @@ public class StudentScoreService {
 		}
 		
 		if ((response.get(0).count.compareTo(new BigInteger("1")) != 0)) {
-			throw new Exception(" insert failed, solidity ret code = " + response.get(0).count.toString());
+			throw new Exception(" insert failed, ret code = " + response.get(0).count.toString());
 		}
 		logger.info(" insert  StudentScore contract success, ,name is {}, subject is {}, score is {} ", name, subject,
 				score);
@@ -88,7 +88,7 @@ public class StudentScoreService {
 		}
 		
 		if (response.get(0).count.compareTo(new BigInteger("1")) != 0) {
-			throw new Exception(" update failed, solidity ret code = " + response.get(0).count.toString());
+			throw new Exception(" update failed, maybe score of this subject not exist, ret code = " + response.get(0).count.toString());
 		}
 		
 		logger.info(" update  StudentScore contract success, ,name is {}, subject is {}, score is {} ", name, subject,
@@ -104,9 +104,6 @@ public class StudentScoreService {
 			throw new Exception(" remove failed, event log not found, may be transaction not exec.");
 		}
 		
-		if ((response.get(0).count.compareTo(new BigInteger("1")) < 0)) {
-			throw new Exception(" remove failed, solidity ret code = " + response.get(0).count.toString());
-		}
 		logger.info(" remove StudentScore contract success, name is {} ", name);
 
 	}
