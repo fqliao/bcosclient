@@ -65,6 +65,10 @@ public class StudentScoreClient {
 			prop.load(contractResource.getInputStream());
 			String contractAddress = prop.getProperty("address");
 			
+			if (contractAddress == null || contractAddress.trim().equals("")) {
+				throw new Exception(" load student score contract address failed, deploy it first. ");
+			}
+			
 			StudentScore studentScore = StudentScore.load(contractAddress, web3j, credentials, new StaticGasProvider(new BigInteger("300000000"), new BigInteger("300000000")));
 			studentScoreService.setStudentScore(studentScore);
 		}
