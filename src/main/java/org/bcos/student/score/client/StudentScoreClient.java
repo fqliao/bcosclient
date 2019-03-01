@@ -52,6 +52,10 @@ public class StudentScoreClient {
 		StudentScoreService studentScoreService = new StudentScoreService();
 		studentScoreService.setCredentials(credentials);
 		studentScoreService.setWeb3j(web3j);
+		
+		setStudentScoreService(studentScoreService);
+		
+		logger.debug(" web3j is " + web3j + " ,credentials is " + credentials);
 		//
 		if (!cmd.equals("deploy")) {
 			
@@ -62,7 +66,7 @@ public class StudentScoreClient {
 			String contractAddress = prop.getProperty("address");
 			
 			StudentScore studentScore = StudentScore.load(contractAddress, web3j, credentials, new StaticGasProvider(new BigInteger("300000000"), new BigInteger("300000000")));
-			setStudentScoreService(studentScoreService);
+			studentScoreService.setStudentScore(studentScore);
 		}
 	}
 
