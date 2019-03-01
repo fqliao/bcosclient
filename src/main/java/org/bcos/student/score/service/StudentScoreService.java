@@ -67,8 +67,12 @@ public class StudentScoreService {
 		TransactionReceipt receipt = studentScore.insert(name, subject, score).send();
 		List<InsertResultEventResponse> response = studentScore.getInsertResultEvents(receipt);
 		
-		if (response.isEmpty() || (response.get(0).count.compareTo(new BigInteger("1")) != 0)) {
-			throw new Exception(" insert failed, event log not found.");
+		if (response.isEmpty()) {
+			throw new Exception(" insert failed, event log not found, may be transaction not exec.");
+		}
+		
+		if ((response.get(0).count.compareTo(new BigInteger("1")) != 0)) {
+			throw new Exception(" insert failed, solidity ret code = " + response.get(0).count.toString());
 		}
 		logger.info(" insert  StudentScore contract success, ,name is {}, subject is {}, score is {} ", name, subject,
 				score);
@@ -79,9 +83,14 @@ public class StudentScoreService {
 		TransactionReceipt receipt = studentScore.update(name, subject, score).send();
 		List<UpdateResultEventResponse> response = studentScore.getUpdateResultEvents(receipt);
 		
-		if (response.isEmpty() || (response.get(0).count.compareTo(new BigInteger("1")) != 0)) {
-			throw new Exception(" update failed, event log not found, maybe score info not exist.");
+		if (response.isEmpty()) {
+			throw new Exception(" update failed, event log not found, may be transaction not exec.");
 		}
+		
+		if (response.get(0).count.compareTo(new BigInteger("1")) != 0) {
+			throw new Exception(" update failed, solidity ret code = " + response.get(0).count.toString());
+		}
+		
 		logger.info(" update  StudentScore contract success, ,name is {}, subject is {}, score is {} ", name, subject,
 				score);
 	}
@@ -91,8 +100,12 @@ public class StudentScoreService {
 		TransactionReceipt receipt = studentScore.remove(name).send();
 		List<RemoveResultEventResponse> response = studentScore.getRemoveResultEvents(receipt);
 		
-		if (response.isEmpty() || (response.get(0).count.compareTo(new BigInteger("1")) != 0)) {
-			throw new Exception(" remove failed, event log not found, maybe " + name + " score info not exist.");
+		if (response.isEmpty()) {
+			throw new Exception(" remove failed, event log not found, may be transaction not exec.");
+		}
+		
+		if ((response.get(0).count.compareTo(new BigInteger("1")) < 0)) {
+			throw new Exception(" remove failed, solidity ret code = " + response.get(0).count.toString());
 		}
 		logger.info(" remove StudentScore contract success, name is {} ", name);
 
