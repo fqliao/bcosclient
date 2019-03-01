@@ -146,7 +146,7 @@ public class StudentScoreClient {
 			System.out.println(" student score record numbers = " + value1.size());
 
 			for (int i = 0; i < value1.size(); i++) {
-				System.out.printf(" subject => %s, score => %s\n", new String(value2.get(i)), value3.get(i).toString());
+				System.out.printf(" subject => %08s, score => %s\n", new String(value2.get(i)), value3.get(i).toString());
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
