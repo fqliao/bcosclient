@@ -37,5 +37,5 @@ function usage()
             ;;
     esac
 
-    java -cp 'apps/*:conf/:lib/*' org.bcos.student.score.client.StudentScoreClient $@
+    java -cp 'apps/*:conf/:lib/*' org.bcos.student.client.StudentScoreClient $@
 
