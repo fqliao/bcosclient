@@ -95,11 +95,11 @@ public class StudentScoreClient {
 	
 			getStudentScoreService().insertStudentScore(name, subject, score);
 			
-			System.out.printf(" insert student score success. ");
+			System.out.println(" insert student score success. ");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
-			System.out.printf(" insert student score failed, error message is " + e.getMessage());
+			System.out.println(" insert student score failed, error message is " + e.getMessage());
 		}
 	}
 
@@ -109,11 +109,11 @@ public class StudentScoreClient {
 
 			getStudentScoreService().updateStudentScore(name, subject, score);
 
-			System.out.printf(" update student score success. ");
+			System.out.println(" update student score success. ");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
-			System.out.printf(" update student score failed, error message is " + e.getMessage());
+			System.out.println(" update student score failed, error message is " + e.getMessage());
 		}
 	}
 
@@ -142,12 +142,12 @@ public class StudentScoreClient {
 			System.out.println(" student score record numbers = " + value1.size());
 
 			for (int i = 0; i < value1.size(); i++) {
-				System.out.printf(" subject => %s, score => %s", value2.get(i), value3.get(i).toString());
+				System.out.printf(" subject => %s, score => %s\n", new String(value2.get(i)), value3.get(i).toString());
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
-			System.out.printf(" select student score failed, error message is " + e.getMessage());
+			System.out.println(" select student score failed, error message is " + e.getMessage());
 		}
 	}
 
