@@ -21,16 +21,19 @@ function usage()
 
     case $1 in
     deploy)
-            [ $# -le 1 ] && { usage }
+            [ $# -lt 1 ] && { usage; }
             ;;
     insert)
-            [ $# -le 4 ] && { usage }
+            [ $# -lt 4 ] && { usage; }
             ;;
     update)
-            [ $# -le 4 ] && { usage }
+            [ $# -lt 4 ] && { usage; }
             ;;
     remove)
-            [ $# -le 2 ] && { usage }
+            [ $# -lt 2 ] && { usage; }
+            ;;
+    select)
+            [ $# -lt 2 ] && { usage; }
             ;;
     *)
         usage
