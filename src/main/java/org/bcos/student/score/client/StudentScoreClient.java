@@ -143,7 +143,7 @@ public class StudentScoreClient {
 			List<byte[]> value2 = result.getValue2();
 			List<BigInteger> value3 = result.getValue3();
 
-			System.out.println( " " + name + " student score count = " + value1.size());
+			System.out.println( " " + name + "'s score count = " + value1.size());
 
 			for (int i = 0; i < value1.size(); i++) {
 				System.out.printf(" subject => %s, score => %s\n", new String(value2.get(i)), value3.get(i).toString());
