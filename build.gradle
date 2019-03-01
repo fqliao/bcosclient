@@ -50,10 +50,7 @@ dependencies {
     runtime 'io.netty:netty-tcnative:2.0.0.Final'
    	compile 'com.google.guava:guava:19.0'
    	runtime 'com.google.guava:guava:19.0'
-  // 	compile files('lib/web3sdk.jar')
-	//runtime files('lib/web3sdk.jar')
-	//compile files('lib/fastjson-1.2.29.jar')
-	//runtime files('lib/fastjson-1.2.29.jar')
+
    	// web3j
    	compile 'org.apache.httpcomponents:httpclient:4.5.2',
             'org.bouncycastle:bcprov-jdk15on:1.54',
@@ -68,10 +65,10 @@ dependencies {
 sourceSets {
 	main {
 		java {
-	        srcDir 'src'
+	        srcDir 'src/main/java'
 		}
         resources  {
-            srcDir 'resources'
+            srcDir 'src/test/resources'
         }
 	}
 }
@@ -90,12 +87,16 @@ jar {
 			into 'dist/lib'
 		}
 		copy {
-			from file('resources/')
+			from file('src/test/resources/')
 			into 'dist/conf'
 		}
 		copy {
 			from file('tool/')
 			into 'dist/'
+		}
+		copy {
+			from file('src/test/resources/contract')
+			into 'dist/contract'
 		}
 	}
 }
