@@ -134,7 +134,7 @@ public class AssetClient {
 			Asset asset = Asset.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			TransactionReceipt receipt = asset.register(assetAccount, amount).send();
 			List<RegisterEventEventResponse> response = asset.getRegisterEventEvents(receipt);
-			if (response.isEmpty()) {
+			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
 					System.out.printf(" register asset account success => asset: %s, amount: %s \n", assetAccount,
 							amount);
@@ -160,7 +160,7 @@ public class AssetClient {
 			Asset asset = Asset.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			TransactionReceipt receipt = asset.transfer(fromAssetAccount, toAssetAccount, amount).send();
 			List<TransferEventEventResponse> response = asset.getTransferEventEvents(receipt);
-			if (response.isEmpty()) {
+			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
 					System.out.printf(" transfer success => from_asset: %s, to_asset: %s, amount: %s \n",
 							fromAssetAccount, toAssetAccount, amount);
