@@ -139,7 +139,7 @@ public class AssetClient {
 					System.out.printf(" register asset account success => asset: %s, amount: %s \n", assetAccount,
 							amount);
 				} else {
-					System.out.printf(" register asset account failed, ret code is %s \n", assetAccount,
+					System.out.printf(" register asset account failed, ret code is %s \n",
 							response.get(0).ret.toString());
 				}
 			} else {
