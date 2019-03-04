@@ -112,6 +112,7 @@ public class AssetClient {
 	public void queryAssetAmount(String assetAccount) {
 		try {
 			String contractAddress = loadAssetAddr();
+			
 			Asset asset = Asset.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			Tuple2<BigInteger, BigInteger> result = asset.select(assetAccount).send();
 			if (result.getValue1().compareTo(new BigInteger("0")) == 0) {
@@ -131,6 +132,7 @@ public class AssetClient {
 	public void registerAssetAccount(String assetAccount, BigInteger amount) {
 		try {
 			String contractAddress = loadAssetAddr();
+			
 			Asset asset = Asset.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			TransactionReceipt receipt = asset.register(assetAccount, amount).send();
 			List<RegisterEventEventResponse> response = asset.getRegisterEventEvents(receipt);
