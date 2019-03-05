@@ -116,7 +116,7 @@ public class AssetClient {
 			Asset asset = Asset.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			Tuple2<BigInteger, BigInteger> result = asset.select(assetAccount).send();
 			if (result.getValue1().compareTo(new BigInteger("0")) == 0) {
-				System.out.printf(" asset account %s, amount %s \n", assetAccount, result.getValue2());
+				System.out.printf(" asset account %s, value %s \n", assetAccount, result.getValue2());
 			} else {
 				System.out.printf(" %s asset account is not exist \n", assetAccount);
 			}
@@ -138,7 +138,7 @@ public class AssetClient {
 			List<RegisterEventEventResponse> response = asset.getRegisterEventEvents(receipt);
 			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
-					System.out.printf(" register asset account success => asset: %s, amount: %s \n", assetAccount,
+					System.out.printf(" register asset account success => asset: %s, value: %s \n", assetAccount,
 							amount);
 				} else {
 					System.out.printf(" register asset account failed, ret code is %s \n",
@@ -185,11 +185,11 @@ public class AssetClient {
 	public static void Usage() {
 		System.out.println(" Usage:");
 		System.out.println("\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient deploy");
-		System.out.println("\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient query asset_account");
+		System.out.println("\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient query account");
 		System.out.println(
-				"\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient register asset_account amount");
+				"\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient register account value");
 		System.out.println(
-				"\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient transfer from_asset_account to_asset_account amount");
+				"\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient transfer from_account to_account amount");
 		System.exit(0);
 	}
 
