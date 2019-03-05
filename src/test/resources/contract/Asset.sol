@@ -6,8 +6,8 @@ contract Asset {
 
     event RegisterEvent(int256 ret, string account, uint256 amount);
     event TransferEvent(int256 ret, string from_account, string to_account, uint256 amount);
-
-    function Asset() public {
+    
+    constructor() public {
         createTable();
     }
 
@@ -67,7 +67,9 @@ contract Asset {
     */
     function register(string account, uint256 amount) public returns(int256){
         int256 ret_code = 0;
-        var (ret, temp_amount) = select(account);
+        int256 ret= 0;
+        uint256 asset_value = 0;
+        (ret, asset_value) = select(account);
         if(ret != 0) {
             Table table = openTable();
             //插入
@@ -86,7 +88,7 @@ contract Asset {
             ret_code = -1;
         }
 
-        RegisterEvent(ret_code, account, amount);
+        emit RegisterEvent(ret_code, account, amount);
 
         return ret_code;
     }
@@ -116,7 +118,7 @@ contract Asset {
         if(ret != 0) {
             ret_code = -1;
             //转移资产的账户不存在
-            TransferEvent(ret_code, from_account, to_account, amount);
+            emit TransferEvent(ret_code, from_account, to_account, amount);
             return ret_code;
 
         }
@@ -126,21 +128,21 @@ contract Asset {
         if(ret != 0) {
             ret_code = -2;
             //接收资产的账户不存在
-            TransferEvent(ret_code, from_account, to_account, amount);
+            emit TransferEvent(ret_code, from_account, to_account, amount);
             return ret_code;
         }
 
         if(from_asset_value < amount) {
             ret_code = -3;
             //转移资产的账户金额不足
-            TransferEvent(ret_code, from_account, to_account, amount);
+            emit TransferEvent(ret_code, from_account, to_account, amount);
             return ret_code;
         } 
 
         if (to_asset_value + amount < to_asset_value) {
             ret_code = -4;
             //接收资产的账户金额溢出
-            TransferEvent(ret_code, from_account, to_account, amount);
+            emit TransferEvent(ret_code, from_account, to_account, amount);
             return ret_code;
         }
 
@@ -157,7 +159,7 @@ contract Asset {
         if(count != 1) {
             ret_code = -5;
             //更新错误
-            TransferEvent(ret_code, from_account, to_account, amount);
+            emit TransferEvent(ret_code, from_account, to_account, amount);
             return ret_code;
         }
 
@@ -169,7 +171,7 @@ contract Asset {
         entry1.set("asset_value", int256(to_asset_value + amount));
         table.update(to_account, entry1, condition1);
 
-        TransferEvent(ret_code, from_account, to_account, amount);
+        emit TransferEvent(ret_code, from_account, to_account, amount);
 
         return ret_code;
 
