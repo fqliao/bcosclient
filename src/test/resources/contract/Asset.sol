@@ -20,12 +20,12 @@ contract Asset {
         // |---------------------|-------------------|
         //
         // 创建表
-        tf.createTable("t_asset_management", "account", "asset_value");
+        tf.createTable("t_asset", "account", "asset_value");
     }
 
     function openTable() private returns(Table) {
         TableFactory tf = TableFactory(0x1001);
-        Table table = tf.openTable("t_asset_management");
+        Table table = tf.openTable("t_asset");
         return table;
     }
 
@@ -61,7 +61,6 @@ contract Asset {
             amount        : 资产金额
     返回值：
             0  资产注册成功
-            -1 参数错误
             -1 资产账户已存在
             -2 其他错误
     */
