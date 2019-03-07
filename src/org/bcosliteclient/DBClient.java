@@ -1,12 +1,10 @@
 package org.bcosliteclient;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 import org.bcosliteclient.DBTest.CreateResultEventResponse;
 import org.bcosliteclient.DBTest.InsertResultEventResponse;
@@ -25,8 +23,6 @@ import org.fisco.bcos.web3j.protocol.exceptions.TransactionException;
 import org.fisco.bcos.web3j.tuples.generated.Tuple3;
 import org.fisco.bcos.web3j.tx.gas.ContractGasProvider;
 import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
-import org.fisco.bcos.web3j.utils.Numeric;
-import org.fisco.bcos.web3j.utils.SolToJavaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -56,26 +52,21 @@ public class DBClient {
 			System.out.println("deploy contract address: " + contractAddress);
 			logger.info("deploy contract address: " + contractAddress);
 
-	        Properties prop = new Properties();
-	        prop.setProperty("address", contractAddress);
-	        final Resource contractResource = new ClassPathResource("contract.properties");
-	        FileOutputStream fos = new FileOutputStream(contractResource.getFile());
-	        prop.store(fos, "contract address");
-	        
-	        System.out.println("deploy contract successful!");
+			Properties prop = new Properties();
+			prop.setProperty("address", contractAddress);
+			final Resource contractResource = new ClassPathResource("contract.properties");
+			FileOutputStream fos = new FileOutputStream(contractResource.getFile());
+			prop.store(fos, "contract address");
 
-		} 
-		catch (TransactionException e) {
-			if("0x19".equals(e.getStatus()))
-			{
+			System.out.println("deploy contract successful!");
+
+		} catch (TransactionException e) {
+			if ("0x19".equals(e.getStatus())) {
 				System.out.println("non-authorized to deploy contracts!");
-			}
-			else
-			{
+			} else {
 				System.out.println(e.getMessage());
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("deploy failed! " + e.getMessage());
 		}
 
@@ -87,25 +78,24 @@ public class DBClient {
 		Properties prop = new Properties();
 		final Resource contractResource = new ClassPathResource("contract.properties");
 		InputStream fis = contractResource.getInputStream();
-        prop.load(fis);
-        String contractAddress = prop.getProperty("address");
-        
-		ContractGasProvider contractGasProvider = new StaticGasProvider(gasPrice, gasLimit);;
+		prop.load(fis);
+		String contractAddress = prop.getProperty("address");
+
+		ContractGasProvider contractGasProvider = new StaticGasProvider(gasPrice, gasLimit);
+		;
 		DBTest dbtest = DBTest.load(contractAddress, web3j, credentials, contractGasProvider);
 		// 创建表
 		if ("create".equals(args[0])) {
 			TransactionReceipt receipt = dbtest.create().send();
 			List<CreateResultEventResponse> createResultEvents = dbtest.getCreateResultEvents(receipt);
-			if(createResultEvents.size() == 0)
-			{
+			if (createResultEvents.size() == 0) {
 				System.out.println("create t_test table failed.");
 				return;
 			}
 			CreateResultEventResponse createResultEventResponse = createResultEvents.get(0);
 			int createCount = createResultEventResponse.count.intValue();
-			switch (createCount)
-			{
-			case 255:
+			switch (createCount) {
+			case 80:
 				System.out.println("non-authorized to create t_test table.");
 				break;
 			case 0:
