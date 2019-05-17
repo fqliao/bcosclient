@@ -6,10 +6,10 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Properties;
 
-import org.bcosliteclient.DBTest.CreateResultEventResponse;
-import org.bcosliteclient.DBTest.InsertResultEventResponse;
-import org.bcosliteclient.DBTest.RemoveResultEventResponse;
-import org.bcosliteclient.DBTest.UpdateResultEventResponse;
+import org.bcosliteclient.TableTest.CreateResultEventResponse;
+import org.bcosliteclient.TableTest.InsertResultEventResponse;
+import org.bcosliteclient.TableTest.RemoveResultEventResponse;
+import org.bcosliteclient.TableTest.UpdateResultEventResponse;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.ECKeyPair;
@@ -30,8 +30,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-public class DBClient {
-	static Logger logger = LoggerFactory.getLogger(DBClient.class);
+public class TableTestClient {
+	static Logger logger = LoggerFactory.getLogger(TableTestClient.class);
 	public static Web3j web3j;
 	// 初始化交易参数
 	public static java.math.BigInteger gasPrice = new BigInteger("1");
@@ -44,11 +44,11 @@ public class DBClient {
 	@SuppressWarnings("deprecation")
 	public static void deployDBTest() {
 
-		RemoteCall<DBTest> deploy = DBTest.deploy(web3j, credentials, gasPrice, gasLimit);
-		DBTest dbtest;
+		RemoteCall<TableTest> deploy = TableTest.deploy(web3j, credentials, gasPrice, gasLimit);
+		TableTest tableTest;
 		try {
-			dbtest = deploy.send();
-			contractAddress = dbtest.getContractAddress();
+			tableTest = deploy.send();
+			contractAddress = tableTest.getContractAddress();
 			System.out.println("deploy contract address: " + contractAddress);
 			logger.info("deploy contract address: " + contractAddress);
 
@@ -83,11 +83,11 @@ public class DBClient {
 
 		ContractGasProvider contractGasProvider = new StaticGasProvider(gasPrice, gasLimit);
 		;
-		DBTest dbtest = DBTest.load(contractAddress, web3j, credentials, contractGasProvider);
+		TableTest tableTest = TableTest.load(contractAddress, web3j, credentials, contractGasProvider);
 		// 创建表
 		if ("create".equals(args[0])) {
-			TransactionReceipt receipt = dbtest.create().send();
-			List<CreateResultEventResponse> createResultEvents = dbtest.getCreateResultEvents(receipt);
+			TransactionReceipt receipt = tableTest.create().send();
+			List<CreateResultEventResponse> createResultEvents = tableTest.getCreateResultEvents(receipt);
 			if (createResultEvents.size() == 0) {
 				System.out.println("create t_test table failed.");
 				return;
@@ -114,9 +114,9 @@ public class DBClient {
 				int item_id = Integer.parseInt(args[2]);
 				String item_name = args[3];
 
-				RemoteCall<TransactionReceipt> insert = dbtest.insert(name, BigInteger.valueOf(item_id), item_name);
+				RemoteCall<TransactionReceipt> insert = tableTest.insert(name, BigInteger.valueOf(item_id), item_name);
 				TransactionReceipt txReceipt = insert.send();
-				List<InsertResultEventResponse> insertResultEvents = dbtest.getInsertResultEvents(txReceipt);
+				List<InsertResultEventResponse> insertResultEvents = tableTest.getInsertResultEvents(txReceipt);
 				if (insertResultEvents.size() > 0) {
 					for (int i = 0; i < insertResultEvents.size(); i++) {
 						InsertResultEventResponse insertResultEventResponse = insertResultEvents.get(i);
@@ -135,7 +135,7 @@ public class DBClient {
 			if (args.length == 2) {
 				try {
 					String keyName = args[1];
-					Tuple3<List<byte[]>, List<BigInteger>, List<byte[]>> lists = dbtest.read(keyName).send();
+					Tuple3<List<byte[]>, List<BigInteger>, List<byte[]>> lists = tableTest.select(keyName).send();
 					List<byte[]> value1 = lists.getValue1();
 					List<BigInteger> value2 = lists.getValue2();
 					List<byte[]> value3 = lists.getValue3();
@@ -166,9 +166,9 @@ public class DBClient {
 				String name = args[1];
 				int item_id = Integer.parseInt(args[2]);
 				String item_name = args[3];
-				RemoteCall<TransactionReceipt> update = dbtest.update(name, BigInteger.valueOf(item_id), item_name);
+				RemoteCall<TransactionReceipt> update = tableTest.update(name, BigInteger.valueOf(item_id), item_name);
 				TransactionReceipt transactionReceipt = update.send();
-				List<UpdateResultEventResponse> updateResultEvents = dbtest.getUpdateResultEvents(transactionReceipt);
+				List<UpdateResultEventResponse> updateResultEvents = tableTest.getUpdateResultEvents(transactionReceipt);
 
 				if (updateResultEvents.size() > 0) {
 					for (int i = 0; i < updateResultEvents.size(); i++) {
@@ -188,9 +188,9 @@ public class DBClient {
 			if (args.length == 3) {
 				String name = args[1];
 				int item_id = Integer.parseInt(args[2]);
-				RemoteCall<TransactionReceipt> remove = dbtest.remove(name, BigInteger.valueOf(item_id));
+				RemoteCall<TransactionReceipt> remove = tableTest.remove(name, BigInteger.valueOf(item_id));
 				TransactionReceipt transactionReceipt = remove.send();
-				List<RemoveResultEventResponse> removeResultEvents = dbtest.getRemoveResultEvents(transactionReceipt);
+				List<RemoveResultEventResponse> removeResultEvents = tableTest.getRemoveResultEvents(transactionReceipt);
 
 				if (removeResultEvents.size() > 0) {
 					RemoveResultEventResponse reomveResultEventResponse = removeResultEvents.get(0);
