@@ -95,13 +95,15 @@ public class TableTestClient {
 			CreateResultEventResponse createResultEventResponse = createResultEvents.get(0);
 			int createCount = createResultEventResponse.count.intValue();
 			switch (createCount) {
-			case 80:
+			case 80: // rc1
+			case 50000: // rc2
+			case -50000: // rc3
 				System.out.println("non-authorized to create t_test table.");
 				break;
-			case 0:
+			case -50001:
 				System.out.println("t_test table already exist.");
 				break;
-			case 1:
+			case 0:
 				System.out.println("create t_test table completed.");
 				break;
 			}
